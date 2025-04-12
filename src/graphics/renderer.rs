@@ -29,19 +29,19 @@ impl Renderer {
 
     pub fn init(&mut self) {
 
-        self.window.limit_update_rate(Some(Duration::from_micros(16600)));
-
         let mut start_time = Instant::now();
         let mut walking_pos = 0f32;
+        let mut fps = 0f32;
+        let mut frame_time = Instant::now();
 
         while self.window.is_open() && !self.window.is_key_down(Key::Escape) {
             self.delta_time = Instant::now() - start_time;
             start_time = Instant::now();
-            println!("delta time = {}", self.delta_time.as_micros());
             walking_pos += self.delta_time.as_secs_f32();
 
             for y in 0..self.height {
                 for x in 0..self.width {
+
                     let index = y * self.width+ x;
 
                     let r = ((x as f32 / self.width as f32) * 255.0) as u32;
@@ -50,12 +50,23 @@ impl Renderer {
                     let pixel_color = (r << 16) | (g << 8) | b;
 
                     self.buffer[index] = pixel_color;
+
                 }
             }
+
+            if frame_time.elapsed() > Duration::from_nanos(1_000_000_000) {
+                println!("fps = {}", fps);
+                fps = 0.0;
+                frame_time = Instant::now();
+            }
+
+            fps += 1.0;
             self.window
                 .update_with_buffer(&self.buffer, self.width, self.height)
                 .expect("Panic on update window");
         }
+
+
     }
 }
 
