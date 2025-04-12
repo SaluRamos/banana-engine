@@ -6,12 +6,16 @@ pub struct Renderer {
     buffer: Vec<u32>,
     window: Window,
     delta_time: Duration,
+    width: usize,
+    height: usize
 }
 
 impl Renderer {
     pub fn new(window: Window) -> Self {
         Self {
             buffer: vec![0; window.get_size().0 * window.get_size().1],
+            width: window.get_size().0,
+            height: window.get_size().1,
             window,
             delta_time: Duration::default(),
         }
@@ -26,6 +30,7 @@ impl Renderer {
     pub fn init(&mut self) {
 
         self.window.limit_update_rate(Some(Duration::from_micros(16600)));
+
         let mut start_time = Instant::now();
         let mut walking_pos = 0f32;
 
@@ -35,12 +40,12 @@ impl Renderer {
             println!("delta time = {}", self.delta_time.as_micros());
             walking_pos += self.delta_time.as_secs_f32();
 
-            for y in 0..self.window.get_size().1 {
-                for x in 0..self.window.get_size().0 {
-                    let index = y * self.window.get_size().0+ x;
+            for y in 0..self.height {
+                for x in 0..self.width {
+                    let index = y * self.width+ x;
 
-                    let r = ((x as f32 / self.window.get_size().0 as f32) * 255.0) as u32;
-                    let g = ((y as f32 / self.window.get_size().1 as f32) * 255.0) as u32;
+                    let r = ((x as f32 / self.width as f32) * 255.0) as u32;
+                    let g = ((y as f32 / self.height as f32) * 255.0) as u32;
                     let b = ((walking_pos.sin() * 0.5 + 0.5) * 255.0) as u32;
                     let pixel_color = (r << 16) | (g << 8) | b;
 
@@ -48,7 +53,7 @@ impl Renderer {
                 }
             }
             self.window
-                .update_with_buffer(&self.buffer, self.window.get_size().0, self.window.get_size().1)
+                .update_with_buffer(&self.buffer, self.width, self.height)
                 .expect("Panic on update window");
         }
     }
