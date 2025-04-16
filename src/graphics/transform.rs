@@ -1,10 +1,16 @@
+use nalgebra::Matrix4;
+use nalgebra::Vector3;
+use nalgebra::Quaternion;
+
 pub struct Transform {
-    mat: Matrix4x4,
+    mat: Matrix4<f32>,
 }
 
 impl Transform {
     pub fn new() -> Self {
-
+        Self {
+            mat: Matrix4::identity(),
+        }
     }
 
     pub fn print(&mut self) {
@@ -15,7 +21,7 @@ impl Transform {
         //multiplica o objeto por um escalar
     }
     
-    pub fn scale_by(&mut self, x: f32, y: f32, z: f32) {
+    pub fn scale_by_axis(&mut self, x: f32, y: f32, z: f32) {
         //multiplica o objeto por um escalar em cada eixo
     }
 
@@ -31,11 +37,11 @@ impl Transform {
         //move x, y, z
     }
 
-    pub fn translate(&mut self, vector: Vector3) {
+    pub fn translate_with_vector(&mut self, vector: Vector3<f32>) {
         //move x, y, z
     }
 
-    pub fn rotate(&mut self, quaternion: Quaternion) {
+    pub fn rotate(&mut self, quaternion: Quaternion<f32>) {
         //rotaciona o objeto em torno do eixo x, y, z
     }
 
