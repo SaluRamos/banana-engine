@@ -5,7 +5,7 @@ Trata-se de uma engine 3d totalmente escrita em rust
 # To Do
 
 - Matriz resolução
-- Tranform (posição, rotação e escala)
+- Transform (posição, rotação e escala)
 - Operação entre matrizes (multiplicação escalar/linear/constante, matriz inversa, matriz identidade, )
 - Matriz de projeção
 - Modelo donut
